@@ -1,0 +1,10 @@
+D:\app\windowform\winforms-chat-app\Client\bin\Release\Client.exe.config
+D:\app\windowform\winforms-chat-app\Client\bin\Release\Client.exe
+D:\app\windowform\winforms-chat-app\Client\bin\Release\Client.pdb
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.csproj.AssemblyReference.cache
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.frm_Client.resources
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.Properties.Resources.resources
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.csproj.GenerateResource.cache
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.csproj.CoreCompileInputs.cache
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.exe
+D:\app\windowform\winforms-chat-app\Client\obj\Release\Client.pdb

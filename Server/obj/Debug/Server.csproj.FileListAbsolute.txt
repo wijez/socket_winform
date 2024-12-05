@@ -8,3 +8,13 @@ D:\Source\.NET\WindownForm\Exercise\Exercise 5\Server\obj\Debug\Server.csproj.Ge
 D:\Source\.NET\WindownForm\Exercise\Exercise 5\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
 D:\Source\.NET\WindownForm\Exercise\Exercise 5\Server\obj\Debug\Server.exe
 D:\Source\.NET\WindownForm\Exercise\Exercise 5\Server\obj\Debug\Server.pdb
+D:\app\windowform\winforms-chat-app\Server\bin\Debug\Server.exe.config
+D:\app\windowform\winforms-chat-app\Server\bin\Debug\Server.exe
+D:\app\windowform\winforms-chat-app\Server\bin\Debug\Server.pdb
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.frm_Server.resources
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.Properties.Resources.resources
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.exe
+D:\app\windowform\winforms-chat-app\Server\obj\Debug\Server.pdb

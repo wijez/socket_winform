@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -19,6 +20,7 @@ namespace Client
         private const string SEND_EMOJI = "4";
 
         private Socket client;
+        private List<Socket> clients = new List<Socket>();
         private IPEndPoint iPEndPoint;
         private const int PORT = 5555;
         private byte[] buffer;
@@ -119,6 +121,7 @@ namespace Client
             }
         }
 
+       
         private void receiveCallback(IAsyncResult ar)
         {
             try
@@ -131,50 +134,135 @@ namespace Client
 
                     string dataType = Encoding.UTF8.GetString(receivedData, 0, 1);
 
+
                     switch (dataType)
                     {
                         case SEND_MESSAGE:
                             string message = Encoding.UTF8.GetString(receivedData, 1, bytesRead - 1);
                             BeginInvoke((Action)(() =>
                             {
-                                Label labelTime = createChatTime();
-                                Panel panelMessage = createChatMessage(message, DockStyle.Left);
-                                panelMessage.Tag = labelTime;
+                                try
+                                {
+                                    Label labelTime = createChatTime();
+                                    Panel panelMessage = createChatMessage(message, DockStyle.Left);
+                                    panelMessage.Tag = labelTime;
 
-                                pnlMain.Controls[0].Controls.Add(labelTime);
-                                labelTime.BringToFront();
-                                pnlMain.Controls[0].Controls.Add(panelMessage);
-                                panelMessage.BringToFront();
-                                (pnlMain.Controls[0] as Panel).ScrollControlIntoView(panelMessage);
-
+                                    pnlMain.Controls[0].Controls.Add(labelTime);
+                                    labelTime.BringToFront();
+                                    pnlMain.Controls[0].Controls.Add(panelMessage);
+                                    panelMessage.BringToFront();
+                                    (pnlMain.Controls[0] as Panel).ScrollControlIntoView(panelMessage);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Error handling message: " + ex.Message);
+                                }
                             }));
                             break;
                         case SEND_IMAGE:
                             BeginInvoke((Action)(() =>
                             {
-                                ImageConverter convertData = new ImageConverter();
-                                Image image = (Image)convertData.ConvertFrom(receivedData.Skip(1).ToArray());
+                                try
+                                {
+                                    //ImageConverter convertData = new ImageConverter();
+                                    //Image image = null;
+                                    //using (MemoryStream ms = new MemoryStream(receivedData.Skip(1).ToArray()))
+                                    //{
+                                    //    image = Image.FromStream(ms);
+                                    //}
+                                    byte[] data = receivedData.Skip(1).ToArray();
 
-                                Label labelTime = createChatTime();
-                                Panel panelImage = createChatImage(image, DockStyle.Left);
-                                panelImage.Tag = labelTime;
+                                    // Kiểm tra tệp là hình ảnh hay PDF
+                                    bool isImage = false;
+                                    try
+                                    {
+                                        using (MemoryStream ms = new MemoryStream(data))
+                                        {
+                                            Image testImage = Image.FromStream(ms);
+                                            isImage = true;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        // Không làm gì, sẽ xử lý tệp không phải là hình ảnh
+                                    }
 
-                                pnlMain.Controls[0].Controls.Add(labelTime);
-                                labelTime.BringToFront();
-                                pnlMain.Controls[0].Controls.Add(panelImage);
-                                panelImage.BringToFront();
-                                (pnlMain.Controls[0] as Panel).ScrollControlIntoView(panelImage);
+                                    if (isImage)
+                                    {
+                                        // Xử lý khi là hình ảnh
+                                        using (MemoryStream ms = new MemoryStream(data))
+                                        {
+                                            Image image = Image.FromStream(ms);
 
-                            }));
+                                            Label labelTime = createChatTime();
+                                            Panel panelImage = createChatImage(image, DockStyle.Left);
+                                            panelImage.Tag = labelTime;
+
+                                            pnlMain.Controls[0].Controls.Add(labelTime);
+                                            labelTime.BringToFront();
+                                            pnlMain.Controls[0].Controls.Add(panelImage);
+                                            panelImage.BringToFront();
+                                            (pnlMain.Controls[0] as Panel).ScrollControlIntoView(panelImage);
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Error handling image: " + ex.Message);
+                                }
+                            }));    
                             break;
                         case SEND_FILE:
-                            break;
+                            BeginInvoke((Action)(() =>
+                            {
+                                try
+                                {
+                                    string fileName = Encoding.UTF8.GetString(receivedData, 1, 256).Trim();
+                                    byte[] fileData = receivedData.Skip(257).ToArray();
 
+                                    //string filePath = Path.Combine("ReceivedFiles", fileName);
+                                    //Directory.CreateDirectory(Path.GetDirectoryName(filePath)); // Ensure the directory exists
+                                    //File.WriteAllBytes(filePath, fileData);
+
+                                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+                                    string filePath = Path.Combine("ReceivedFiles", uniqueFileName);
+
+                                    string directory = Path.GetDirectoryName(filePath);
+                                    if (!Directory.Exists(directory))
+                                    {
+                                        Directory.CreateDirectory(directory);
+                                    }
+
+                                    using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                                    {
+                                        fs.Write(fileData, 0, fileData.Length);
+                                    }
+
+                                    Label labelTime = createChatTime();
+                                    Panel panelFile = createChatFile(fileName, DockStyle.Left);
+                                    panelFile.Tag = fileName;
+
+                                    pnlMain.Controls[0].Controls.Add(labelTime);
+                                    labelTime.BringToFront();
+                                    pnlMain.Controls[0].Controls.Add(panelFile);
+                                    panelFile.BringToFront();
+                                    (pnlMain.Controls[0] as Panel).ScrollControlIntoView(panelFile);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Error handling file: " + ex.Message);
+                                }
+                            }));
+                            break;
                         case SEND_EMOJI:
                             BeginInvoke((Action)(() =>
                             {
                                 ImageConverter convertData = new ImageConverter();
-                                Image image = (Image)convertData.ConvertFrom(receivedData.Skip(1).ToArray());
+                                Image image = null;
+                                using (MemoryStream ms = new MemoryStream(receivedData.Skip(1).ToArray()))
+                                {
+                                    image = Image.FromStream(ms);
+                                }
 
                                 Label labelTime = createChatTime();
                                 Panel panelEmoji = createChatEmoji(image, DockStyle.Left);
@@ -190,7 +278,7 @@ namespace Client
                             break;
                     }
 
-                    buffer = new byte[1024 * 20];
+                    buffer = new byte[1024 * 100];
                     client.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, receiveCallback, null);
                 }
                 else
@@ -203,6 +291,7 @@ namespace Client
                 MessageBox.Show("Lỗi nhận dữ liệu từ máy chủ");
             }
         }
+
 
         private void sendMessage(string message)
         {
@@ -285,8 +374,6 @@ namespace Client
             checkBox.ForeColor = Color.Black;
             checkBox.Padding = new Padding(10);
             checkBox.TextAlign = ContentAlignment.MiddleLeft;
-            /*checkBox.BackColor = clients.Count == 1 ? Color.FromArgb(229, 239, 255) : Color.White;
-            checkBox.Checked = clients.Count == 1;*/
             checkBox.CheckedChanged += chatClient_CheckedChanged;
             checkBox.Click += chatClient_Click;
 
@@ -315,9 +402,7 @@ namespace Client
             lblUsername.Text = chatLabel.Text;
 
             int index = pnlSidebar.Controls.GetChildIndex(chatLabel);
-            /*panelViews[currentClientIndex].Visible = false;
-            currentClientIndex = index;
-            panelViews[currentClientIndex].Visible = true;*/
+          
         }
 
         private Panel createChatMessage(string message, DockStyle dock)
@@ -330,22 +415,30 @@ namespace Client
             label.Dock = dock;
             label.MaximumSize = new Size(300, 500);
             label.AutoSize = true;
+            label.BorderStyle = BorderStyle.FixedSingle;
             label.Font = new Font(label.Font.FontFamily, 12);
-            label.ForeColor = dock == DockStyle.Right ? Color.White : Color.Black;
+            label.ForeColor = dock == DockStyle.Right ? Color.Gray : Color.Black;
             label.Padding = new Padding(10);
             label.TextAlign = ContentAlignment.MiddleLeft;
-            label.BackColor = dock == DockStyle.Right ? Color.FromArgb(0, 145, 255) : Color.FromArgb(229, 239, 255);
+            label.BackColor = dock == DockStyle.Right ? Color.FromArgb(245, 228, 145) : Color.FromArgb(3, 221, 17);
             label.AutoEllipsis = true;
 
             PictureBox ptbDelete = new PictureBox();
             ptbDelete.Size = new Size(18, 18);
-            ptbDelete.Image = Properties.Resources.ic_delete;
+            ptbDelete.Image = Properties.Resources.icons8_delete_50;
             ptbDelete.SizeMode = PictureBoxSizeMode.StretchImage;
             ptbDelete.Dock = DockStyle.Bottom;
+
+            PictureBox ptbForward = new PictureBox();
+            ptbForward.Size = new Size(18, 18);
+            ptbForward.Image = Properties.Resources.icons8_forward_50 ; 
+            ptbForward.SizeMode = PictureBoxSizeMode.StretchImage;
+            ptbForward.Dock = DockStyle.Bottom;
 
             Panel pnlDelete = new Panel();
             pnlDelete.Dock = dock;
             pnlDelete.Controls.Add(ptbDelete);
+            pnlDelete.Controls.Add(ptbForward);
             pnlDelete.Size = new Size(28, pnlDelete.Height);
             pnlDelete.Padding = new Padding(5, 5, 5, 10);
 
@@ -355,8 +448,52 @@ namespace Client
             pnlDelete.BringToFront();
 
             ptbDelete.Click += ptbDelete_Click;
+            ptbForward.Click += (sender, e) => ForwardMessage(message);
 
             return panel;
+        }
+
+        private void ForwardMessage(string message)
+        {
+            Form forwardForm = new Form();
+            forwardForm.Text = "Chuyển tiếp tin nhắn";
+            forwardForm.Size = new Size(300, 200);
+
+            Label lblSelectClient = new Label();
+            lblSelectClient.Text = "Chọn Client:";
+            lblSelectClient.Dock = DockStyle.Top;
+            forwardForm.Controls.Add(lblSelectClient);
+
+            ComboBox cmbClients = new ComboBox();
+            cmbClients.Dock = DockStyle.Top;
+            foreach (Control control in pnlSidebar.Controls)
+            {
+                if (control is CheckBox checkBox)
+                {
+                    cmbClients.Items.Add(checkBox.Text);
+                }
+            }
+            forwardForm.Controls.Add(cmbClients);
+
+            Button btnSend = new Button();
+            btnSend.Text = "Send";
+            btnSend.Dock = DockStyle.Top;
+            btnSend.Click += (sender, e) =>
+            {
+                if (cmbClients.SelectedIndex != -1)
+                {
+                    string selectedClient = cmbClients.SelectedItem.ToString();
+                    sendMessage(SEND_MESSAGE + selectedClient + ":" + message);
+                    forwardForm.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a client to forward the message.");
+                }
+            };
+            forwardForm.Controls.Add(btnSend);
+
+            forwardForm.ShowDialog();
         }
 
         private Panel createChatImage(Image image, DockStyle dock)
@@ -375,9 +512,10 @@ namespace Client
 
             PictureBox ptbDelete = new PictureBox();
             ptbDelete.Size = new Size(18, 18);
-            ptbDelete.Image = Properties.Resources.ic_delete;
+            ptbDelete.Image = Properties.Resources.icons8_delete_50;
             ptbDelete.SizeMode = PictureBoxSizeMode.StretchImage;
             ptbDelete.Dock = DockStyle.Bottom;
+
 
             Panel pnlDelete = new Panel();
             pnlDelete.Dock = dock;
@@ -393,6 +531,151 @@ namespace Client
             ptbDelete.Click += ptbDelete_Click;
 
             return panel;
+        }
+
+       
+        private void sendFile(string filePath)
+        {
+            try
+            {
+                string fileName = Path.GetFileName(filePath);
+                byte[] fileData = File.ReadAllBytes(filePath);
+
+                byte[] dataType = Encoding.UTF8.GetBytes(SEND_FILE);
+                byte[] fileNameBytes = Encoding.UTF8.GetBytes(fileName.PadRight(256));
+                byte[] mergedArray = dataType.Concat(fileNameBytes).Concat(fileData).ToArray();
+
+                client.Send(mergedArray);
+
+
+
+                Label labelTime = createChatTime();
+                Panel panelFile = createChatFile(fileName, DockStyle.Right);
+                panelFile.Tag = fileName;
+
+                pnlMain.Controls[0].Controls.Add(labelTime);
+                labelTime.BringToFront();
+                pnlMain.Controls[0].Controls.Add(panelFile);
+                panelFile.BringToFront();
+                (pnlMain.Controls[0] as Panel).ScrollControlIntoView(panelFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error sending file '{Path.GetFileName(filePath)}': {ex.Message}");
+            }
+        }
+
+        private Panel createChatFile(string fileName, DockStyle dock)
+        {
+            Panel panel = new Panel();
+            panel.Dock = DockStyle.Top;
+            panel.Tag = fileName;
+
+            Label label = new Label();
+            label.Text = fileName;
+            label.Dock = dock;
+            label.MaximumSize = new Size(300, 500);
+            label.AutoSize = true;
+            label.BorderStyle = BorderStyle.FixedSingle;
+            label.Font = new Font(label.Font.FontFamily, 12);
+            label.ForeColor = dock == DockStyle.Right ? Color.Gray : Color.Black;
+            label.Padding = new Padding(10);
+            label.TextAlign = ContentAlignment.MiddleLeft;
+            label.BackColor = dock == DockStyle.Right ? Color.FromArgb(245, 228, 145) : Color.FromArgb(3, 221, 17);
+            label.AutoEllipsis = true;
+
+            label.Click += label_Click;
+
+            PictureBox ptbDelete = new PictureBox();
+            ptbDelete.Size = new Size(18, 18);
+            ptbDelete.Image = Properties.Resources.icons8_delete_50;
+            ptbDelete.SizeMode = PictureBoxSizeMode.StretchImage;
+            ptbDelete.Dock = DockStyle.Bottom;
+
+            Panel pnlDelete = new Panel();
+            pnlDelete.Dock = dock;
+            pnlDelete.Controls.Add(ptbDelete);
+            pnlDelete.Size = new Size(28, pnlDelete.Height);
+            pnlDelete.Padding = new Padding(5, 5, 5, 10);
+
+            panel.Controls.Add(label);
+            panel.Height = label.Height;
+            panel.Controls.Add(pnlDelete);
+            pnlDelete.BringToFront();
+
+            ptbDelete.Click += ptbDelete_Click;
+            panel.Click += panelFile_Click;
+
+            return panel;
+        }
+
+        private void label_Click(object sender, EventArgs e)
+        {
+            Label label = sender as Label;
+            string filePath = label?.Tag as string;
+
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    FileName = Path.GetFileName(filePath),
+                    Filter = "All Files|*.*"
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Sử dụng `FileStream` để đảm bảo tệp không bị khóa
+                        using (FileStream sourceStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (FileStream destinationStream = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write))
+                        {
+                            sourceStream.CopyTo(destinationStream);
+                        }
+                        MessageBox.Show("Tệp đã được tải xuống thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Đã xảy ra lỗi khi tải tệp: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Tệp không tồn tại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void panelFile_Click(object sender, EventArgs e)
+        {
+            Panel panel = sender as Panel;
+            string fileName = panel?.Tag as string;
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string filePath = Path.Combine("ReceivedFiles", fileName);
+
+                if (File.Exists(filePath))
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.FileName = fileName;
+                    saveFileDialog.Filter = "All Files|*.*";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.Copy(filePath, saveFileDialog.FileName, true);
+                        MessageBox.Show("File downloaded successfully.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("File not found.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("File name is null or empty.");
+            }
         }
 
         private Panel createChatEmoji(Image image, DockStyle dock)
@@ -411,7 +694,7 @@ namespace Client
 
             PictureBox ptbDelete = new PictureBox();
             ptbDelete.Size = new Size(18, 18);
-            ptbDelete.Image = Properties.Resources.ic_delete;
+            ptbDelete.Image = Properties.Resources.icons8_delete_50;
             ptbDelete.SizeMode = PictureBoxSizeMode.StretchImage;
             ptbDelete.Dock = DockStyle.Bottom;
 
@@ -435,17 +718,50 @@ namespace Client
         {
             try
             {
-                PictureBox ptbDelete = sender as PictureBox;
-                Control topParent = ptbDelete.Parent.Parent;
-                Control time = (Control)topParent.Tag;
-                pnlMain.Controls[0].Controls.Remove(topParent);
-                pnlMain.Controls[0].Controls.Remove(time);
-            }
-            catch (Exception)
-            {
+                DialogResult dialogResult = MessageBox.Show(
+                    "Bạn có muốn xóa tin nhắn này không?",
+                    "Xác nhận xóa",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
 
+                if (dialogResult == DialogResult.Yes)
+                {
+                    PictureBox ptbDelete = sender as PictureBox;
+
+                    if (ptbDelete == null || ptbDelete.Parent == null || ptbDelete.Parent.Parent == null)
+                    {
+                        MessageBox.Show("Lỗi: Không tìm thấy đối tượng cần xóa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    Control topParent = ptbDelete.Parent.Parent;
+                    object tagValue = topParent.Tag;
+
+                    pnlMain.Controls[0].Controls.Remove(topParent);
+
+                    if (tagValue is Control time && pnlMain.Controls[0].Controls.Contains(time))
+                        pnlMain.Controls[0].Controls.Remove(time);
+
+                    if (tagValue is string filePath && File.Exists(filePath))
+                    {
+                        try
+                        {
+                            File.Delete(filePath); 
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Không thể xóa file: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         public Size calculateAspectRatio(Size originalSize, int targetWidth)
         {
@@ -544,7 +860,7 @@ namespace Client
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Lỗi gửi hình ảnh");
+                    MessageBox.Show("Lỗi gửi hình ảnh hình ảnh phải dạng png jpg, ...");
                 }
             }
         }
@@ -561,7 +877,18 @@ namespace Client
 
         private void ptbFile_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Tính năng đang phát triển");
+            openFileDialog.Filter = "Supported Files|*.txt;*.doc;*.docx;*.pdf|All Files|*.*";
+            openFileDialog.Title = "Chọn tệp để gửi";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                sendFile(openFileDialog.FileName);
+            }
+        }
+
+        private void openFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
     }
 }

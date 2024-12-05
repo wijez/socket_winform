@@ -1,0 +1,9 @@
+superuser:
+	superuser
+	mauiaMKQ9d30suh
+committee manager:
+	nvquan.020102
+	4UdS9YERyR8Vo7dtm
+member:
+	nvhuy.020102
+	sBdnbWElvvI7hlmsU

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_Server));
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.pnlSidebar = new System.Windows.Forms.Panel();
             this.pnlLogo = new System.Windows.Forms.Panel();
@@ -38,7 +39,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblHint = new System.Windows.Forms.Label();
             this.txtMessage = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
             this.pnlIcon = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -47,6 +47,7 @@
             this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlEmoji = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.btnSend = new System.Windows.Forms.Button();
             this.ptbEmoji = new System.Windows.Forms.PictureBox();
             this.ptbFile = new System.Windows.Forms.PictureBox();
             this.ptbImage = new System.Windows.Forms.PictureBox();
@@ -72,39 +73,44 @@
             this.pnlLeft.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlLeft.Margin = new System.Windows.Forms.Padding(2);
             this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Size = new System.Drawing.Size(270, 599);
+            this.pnlLeft.Size = new System.Drawing.Size(216, 479);
             this.pnlLeft.TabIndex = 0;
             // 
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.White;
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSidebar.Location = new System.Drawing.Point(0, 61);
+            this.pnlSidebar.Location = new System.Drawing.Point(0, 49);
+            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSidebar.Name = "pnlSidebar";
-            this.pnlSidebar.Size = new System.Drawing.Size(269, 538);
+            this.pnlSidebar.Size = new System.Drawing.Size(215, 430);
             this.pnlSidebar.TabIndex = 4;
             // 
             // pnlLogo
             // 
-            this.pnlLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(255)))));
+            this.pnlLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.pnlLogo.Controls.Add(this.label2);
             this.pnlLogo.Controls.Add(this.pictureBox1);
             this.pnlLogo.Controls.Add(this.label1);
             this.pnlLogo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlLogo.Location = new System.Drawing.Point(0, 0);
+            this.pnlLogo.Margin = new System.Windows.Forms.Padding(2);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(269, 61);
+            this.pnlLogo.Size = new System.Drawing.Size(215, 49);
             this.pnlLogo.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.label2.Font = new System.Drawing.Font("Arial", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(58, 14);
+            this.label2.ForeColor = System.Drawing.Color.Gray;
+            this.label2.Location = new System.Drawing.Point(46, 11);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(151, 32);
+            this.label2.Size = new System.Drawing.Size(119, 25);
             this.label2.TabIndex = 3;
             this.label2.Text = "Messenger";
             // 
@@ -112,18 +118,20 @@
             // 
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(219)))), ((int)(((byte)(225)))));
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label1.Location = new System.Drawing.Point(0, 60);
+            this.label1.Location = new System.Drawing.Point(0, 48);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(269, 1);
+            this.label1.Size = new System.Drawing.Size(215, 1);
             this.label1.TabIndex = 1;
             // 
             // label5
             // 
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(219)))), ((int)(((byte)(225)))));
             this.label5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label5.Location = new System.Drawing.Point(269, 0);
+            this.label5.Location = new System.Drawing.Point(215, 0);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(1, 599);
+            this.label5.Size = new System.Drawing.Size(1, 479);
             this.label5.TabIndex = 0;
             // 
             // panel2
@@ -132,10 +140,11 @@
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.btnSend);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(270, 519);
+            this.panel2.Location = new System.Drawing.Point(216, 415);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(15);
-            this.panel2.Size = new System.Drawing.Size(602, 80);
+            this.panel2.Padding = new System.Windows.Forms.Padding(12);
+            this.panel2.Size = new System.Drawing.Size(482, 64);
             this.panel2.TabIndex = 1;
             // 
             // panel1
@@ -143,10 +152,11 @@
             this.panel1.Controls.Add(this.lblHint);
             this.panel1.Controls.Add(this.txtMessage);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(15, 15);
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 15, 0);
-            this.panel1.Size = new System.Drawing.Size(497, 50);
+            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 12, 0);
+            this.panel1.Size = new System.Drawing.Size(398, 40);
             this.panel1.TabIndex = 0;
             // 
             // lblHint
@@ -156,8 +166,9 @@
             this.lblHint.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHint.ForeColor = System.Drawing.SystemColors.GrayText;
             this.lblHint.Location = new System.Drawing.Point(0, 0);
+            this.lblHint.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(482, 50);
+            this.lblHint.Size = new System.Drawing.Size(386, 40);
             this.lblHint.TabIndex = 4;
             this.lblHint.Text = "Nhập tin nhắn";
             this.lblHint.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -169,29 +180,13 @@
             this.txtMessage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMessage.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMessage.Location = new System.Drawing.Point(0, 0);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(482, 50);
+            this.txtMessage.Size = new System.Drawing.Size(386, 40);
             this.txtMessage.TabIndex = 3;
             this.txtMessage.Visible = false;
             this.txtMessage.TextChanged += new System.EventHandler(this.txtMessage_TextChanged);
-            // 
-            // btnSend
-            // 
-            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(255)))));
-            this.btnSend.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnSend.FlatAppearance.BorderSize = 0;
-            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSend.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSend.ForeColor = System.Drawing.Color.White;
-            this.btnSend.Location = new System.Drawing.Point(512, 15);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 50);
-            this.btnSend.TabIndex = 0;
-            this.btnSend.Text = "GỬI";
-            this.btnSend.UseVisualStyleBackColor = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // pnlIcon
             // 
@@ -202,9 +197,10 @@
             this.pnlIcon.Controls.Add(this.label4);
             this.pnlIcon.Controls.Add(this.label3);
             this.pnlIcon.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlIcon.Location = new System.Drawing.Point(270, 473);
+            this.pnlIcon.Location = new System.Drawing.Point(216, 378);
+            this.pnlIcon.Margin = new System.Windows.Forms.Padding(2);
             this.pnlIcon.Name = "pnlIcon";
-            this.pnlIcon.Size = new System.Drawing.Size(602, 46);
+            this.pnlIcon.Size = new System.Drawing.Size(482, 37);
             this.pnlIcon.TabIndex = 0;
             // 
             // label4
@@ -212,8 +208,9 @@
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(219)))), ((int)(((byte)(225)))));
             this.label4.Dock = System.Windows.Forms.DockStyle.Top;
             this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(602, 1);
+            this.label4.Size = new System.Drawing.Size(482, 1);
             this.label4.TabIndex = 1;
             this.label4.Text = "label4";
             // 
@@ -221,9 +218,10 @@
             // 
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(219)))), ((int)(((byte)(225)))));
             this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label3.Location = new System.Drawing.Point(0, 45);
+            this.label3.Location = new System.Drawing.Point(0, 36);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(602, 1);
+            this.label3.Size = new System.Drawing.Size(482, 1);
             this.label3.TabIndex = 0;
             this.label3.Text = "label3";
             // 
@@ -235,16 +233,17 @@
             // 
             // lblUsername
             // 
-            this.lblUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(255)))));
+            this.lblUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.lblUsername.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblUsername.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUsername.ForeColor = System.Drawing.Color.White;
-            this.lblUsername.Location = new System.Drawing.Point(270, 0);
+            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsername.ForeColor = System.Drawing.Color.Gray;
+            this.lblUsername.Location = new System.Drawing.Point(216, 0);
+            this.lblUsername.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.lblUsername.Size = new System.Drawing.Size(602, 60);
+            this.lblUsername.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
+            this.lblUsername.Size = new System.Drawing.Size(482, 48);
             this.lblUsername.TabIndex = 0;
-            this.lblUsername.Text = "Phan Minh Hung";
+            this.lblUsername.Text = "Quý Việt";
             this.lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlContent
@@ -254,9 +253,10 @@
             this.pnlContent.Controls.Add(this.pnlEmoji);
             this.pnlContent.Controls.Add(this.pnlMain);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(270, 60);
+            this.pnlContent.Location = new System.Drawing.Point(216, 48);
+            this.pnlContent.Margin = new System.Windows.Forms.Padding(2);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(602, 413);
+            this.pnlContent.Size = new System.Drawing.Size(482, 330);
             this.pnlContent.TabIndex = 3;
             this.pnlContent.TabStop = true;
             // 
@@ -266,10 +266,11 @@
             this.pnlEmoji.AutoScroll = true;
             this.pnlEmoji.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.pnlEmoji.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlEmoji.Location = new System.Drawing.Point(90, 163);
+            this.pnlEmoji.Location = new System.Drawing.Point(72, 130);
+            this.pnlEmoji.Margin = new System.Windows.Forms.Padding(2);
             this.pnlEmoji.Name = "pnlEmoji";
-            this.pnlEmoji.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlEmoji.Size = new System.Drawing.Size(215, 250);
+            this.pnlEmoji.Padding = new System.Windows.Forms.Padding(8);
+            this.pnlEmoji.Size = new System.Drawing.Size(172, 200);
             this.pnlEmoji.TabIndex = 0;
             this.pnlEmoji.Visible = false;
             // 
@@ -278,16 +279,35 @@
             this.pnlMain.BackColor = System.Drawing.Color.White;
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.Location = new System.Drawing.Point(0, 0);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(2);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(602, 413);
+            this.pnlMain.Size = new System.Drawing.Size(482, 330);
             this.pnlMain.TabIndex = 1;
+            // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.Color.Transparent;
+            this.btnSend.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnSend.FlatAppearance.BorderSize = 0;
+            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSend.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSend.ForeColor = System.Drawing.Color.White;
+            this.btnSend.Image = global::Server.Properties.Resources.icons8_send_50;
+            this.btnSend.Location = new System.Drawing.Point(410, 12);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(8, 2, 2, 2);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(60, 40);
+            this.btnSend.TabIndex = 0;
+            this.btnSend.UseVisualStyleBackColor = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // ptbEmoji
             // 
-            this.ptbEmoji.Image = global::Server.Properties.Resources.ic_emoji;
-            this.ptbEmoji.Location = new System.Drawing.Point(90, 11);
+            this.ptbEmoji.Image = global::Server.Properties.Resources.icons8_crazy_50;
+            this.ptbEmoji.Location = new System.Drawing.Point(72, 9);
+            this.ptbEmoji.Margin = new System.Windows.Forms.Padding(2);
             this.ptbEmoji.Name = "ptbEmoji";
-            this.ptbEmoji.Size = new System.Drawing.Size(25, 25);
+            this.ptbEmoji.Size = new System.Drawing.Size(20, 20);
             this.ptbEmoji.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ptbEmoji.TabIndex = 3;
             this.ptbEmoji.TabStop = false;
@@ -296,9 +316,10 @@
             // ptbFile
             // 
             this.ptbFile.Image = global::Server.Properties.Resources.ic_file;
-            this.ptbFile.Location = new System.Drawing.Point(50, 11);
+            this.ptbFile.Location = new System.Drawing.Point(40, 9);
+            this.ptbFile.Margin = new System.Windows.Forms.Padding(2);
             this.ptbFile.Name = "ptbFile";
-            this.ptbFile.Size = new System.Drawing.Size(25, 25);
+            this.ptbFile.Size = new System.Drawing.Size(20, 20);
             this.ptbFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ptbFile.TabIndex = 2;
             this.ptbFile.TabStop = false;
@@ -306,10 +327,11 @@
             // 
             // ptbImage
             // 
-            this.ptbImage.Image = global::Server.Properties.Resources.ic_picture;
-            this.ptbImage.Location = new System.Drawing.Point(10, 11);
+            this.ptbImage.Image = global::Server.Properties.Resources.icons8_picture_64;
+            this.ptbImage.Location = new System.Drawing.Point(8, 9);
+            this.ptbImage.Margin = new System.Windows.Forms.Padding(2);
             this.ptbImage.Name = "ptbImage";
-            this.ptbImage.Size = new System.Drawing.Size(25, 25);
+            this.ptbImage.Size = new System.Drawing.Size(20, 20);
             this.ptbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ptbImage.TabIndex = 0;
             this.ptbImage.TabStop = false;
@@ -317,10 +339,11 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Server.Properties.Resources.ic_chat;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 10);
+            this.pictureBox1.Image = global::Server.Properties.Resources.icons8_message_50;
+            this.pictureBox1.Location = new System.Drawing.Point(10, 8);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -328,15 +351,17 @@
             // frm_Server
             // 
             this.AcceptButton = this.btnSend;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(872, 599);
+            this.ClientSize = new System.Drawing.Size(698, 479);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.pnlIcon);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pnlLeft);
-            this.MinimumSize = new System.Drawing.Size(600, 400);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(483, 328);
             this.Name = "frm_Server";
             this.Text = "Server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frm_Server_FormClosing);
